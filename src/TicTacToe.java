@@ -2,47 +2,51 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
-public class JogoDaVelha extends JFrame {
+public class TicTacToe extends JFrame {
 
     JButton[] bt = new JButton[9];
-    JLabel placar = new JLabel("placar");
-    JLabel px = new JLabel("X 0");
-    JLabel po = new JLabel("O 0");
-    JButton novo = new JButton("novo jogo");
-    JButton zerar = new JButton("zerar placar");
+    JLabel scoreboard = new JLabel("Scoreboard");
+    JLabel px = new JLabel("Player X: 0");
+    JLabel po = new JLabel("Player O: 0");
+    JButton newGame = new JButton("New Game");
+    JButton reset = new JButton("Reset");
     int PX = 0;
     int PO = 0;
     boolean xo = false;
     boolean[] click = new boolean[9];
 
-    public JogoDaVelha() {
+    public static void main(String[] args) {
+        new TicTacToe();
+    }
+
+    public TicTacToe() {
         setVisible(true);
-        setTitle("Jogo da Velha");
+        setTitle("Tic-Tac-Toe");
         setDefaultCloseOperation(3);
         setLayout(null);
-        setBounds(250, 100, 700, 500);
-        add(placar);
+        setBounds(250, 100, 700, 500); // background
+        add(scoreboard);
         add(px);
         add(po);
-        add(novo);
-        add(zerar);
-        placar.setBounds(425, 50, 100, 30);
-        px.setBounds(400, 75, 100, 30);
-        po.setBounds(450, 75, 100, 30);
-        novo.setBounds(410, 130, 140, 30);
-        zerar.setBounds(410, 180, 140, 30);
-        novo.addActionListener(new java.awt.event.ActionListener() {
+        add(newGame);
+        add(reset);
+        scoreboard.setBounds(450, 55, 100, 30); // texto placar
+        px.setBounds(390, 95, 100, 30); // texto placar do X
+        po.setBounds(510, 95, 100, 30); // texto placar do O
+        newGame.setBounds(415, 155, 140, 30); // botao de novo jogo
+        reset.setBounds(415, 210, 140, 30); // botao de zerar placar
+        newGame.addActionListener(new java.awt.event.ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                limpar();
+                clear();  // começa novo jogo
             }
         });
-        zerar.addActionListener(new java.awt.event.ActionListener() {
+        reset.addActionListener(new java.awt.event.ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 PO = 0;
                 PX = 0;
-                atualizar();
+                update();  // zera o placar
             }
         });
         int cont = 0;
@@ -50,8 +54,8 @@ public class JogoDaVelha extends JFrame {
             for (int j = 0; j < 3; j++) {
                 bt[cont] = new JButton();
                 add(bt[cont]);
-                bt[cont].setBounds((100 * i) + 50, (100 * j) + 50, 95, 95); // borda dos botoes
-                bt[cont].setFont(new Font("Arial", Font.BOLD, 40));
+                bt[cont].setBounds((100 * i) + 50, (100 * j) + 50, 95, 95); // borda dos botoes / tamanho de cada botao
+                bt[cont].setFont(new Font("Arial", Font.BOLD, 40));  // fonte das letras dentro do botao
                 cont++;
             }
         }
@@ -59,15 +63,13 @@ public class JogoDaVelha extends JFrame {
         for (int i = 0; i < 9; i++) {
             click[i] = false;
         }
-
         bt[0].addActionListener(new java.awt.event.ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (click[0] == false) {
                     click[0] = true;
-                    mudar(bt[0]);
+                    changePlayer(bt[0]);
                 }
-
             }
         });
         bt[1].addActionListener(new java.awt.event.ActionListener() {
@@ -75,9 +77,8 @@ public class JogoDaVelha extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (click[1] == false) {
                     click[1] = true;
-                    mudar(bt[1]);
+                    changePlayer(bt[1]);
                 }
-
             }
         });
         bt[2].addActionListener(new java.awt.event.ActionListener() {
@@ -85,9 +86,8 @@ public class JogoDaVelha extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (click[2] == false) {
                     click[2] = true;
-                    mudar(bt[2]);
+                    changePlayer(bt[2]);
                 }
-
             }
         });
         bt[3].addActionListener(new java.awt.event.ActionListener() {
@@ -95,9 +95,8 @@ public class JogoDaVelha extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (click[3] == false) {
                     click[3] = true;
-                    mudar(bt[3]);
+                    changePlayer(bt[3]);
                 }
-
             }
         });
         bt[4].addActionListener(new java.awt.event.ActionListener() {
@@ -105,9 +104,8 @@ public class JogoDaVelha extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (click[4] == false) {
                     click[4] = true;
-                    mudar(bt[4]);
+                    changePlayer(bt[4]);
                 }
-
             }
         });
         bt[5].addActionListener(new java.awt.event.ActionListener() {
@@ -115,9 +113,8 @@ public class JogoDaVelha extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (click[5] == false) {
                     click[5] = true;
-                    mudar(bt[5]);
+                    changePlayer(bt[5]);
                 }
-
             }
         });
         bt[6].addActionListener(new java.awt.event.ActionListener() {
@@ -125,9 +122,8 @@ public class JogoDaVelha extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (click[6] == false) {
                     click[6] = true;
-                    mudar(bt[6]);
+                    changePlayer(bt[6]);
                 }
-
             }
         });
         bt[7].addActionListener(new java.awt.event.ActionListener() {
@@ -135,9 +131,8 @@ public class JogoDaVelha extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (click[7] == false) {
                     click[7] = true;
-                    mudar(bt[7]);
+                    changePlayer(bt[7]);
                 }
-
             }
         });
         bt[8].addActionListener(new java.awt.event.ActionListener() {
@@ -145,14 +140,13 @@ public class JogoDaVelha extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 if (click[8] == false) {
                     click[8] = true;
-                    mudar(bt[8]);
+                    changePlayer(bt[8]);
                 }
-
             }
         });
     }
 
-    public void mudar(JButton btn) {
+    public void changePlayer(JButton btn) {
         if (xo) {
             btn.setText("O");
             xo = false;
@@ -160,15 +154,15 @@ public class JogoDaVelha extends JFrame {
             btn.setText("X");
             xo = true;
         }
-        ganhou();
+        winGame();
     }
 
-    public void atualizar() {
-        px.setText("X " + PX);
-        po.setText("O " + PO);
+    public void update() {  // atualiza placar
+        px.setText("Player X: " + PX);
+        po.setText("Player O: " + PO);
     }
 
-    public void ganhou() {
+    public void winGame() {
         int cont = 0;
         for (int i = 0; i < 9; i++) {
             if (click[i] == true) {
@@ -183,10 +177,10 @@ public class JogoDaVelha extends JFrame {
                 (bt[2].getText() == "X" && bt[5].getText() == "X" && bt[8].getText() == "X") ||
                 (bt[0].getText() == "X" && bt[4].getText() == "X" && bt[8].getText() == "X") ||
                 (bt[6].getText() == "X" && bt[4].getText() == "X" && bt[2].getText() == "X")) {
-            JOptionPane.showMessageDialog(null, "X ganhou");
+            JOptionPane.showMessageDialog(null, "Player X win");
             PX++;
-            atualizar();
-            limpar();
+            update();
+            clear();
         } else if ((bt[0].getText() == "O" && bt[1].getText() == "O" && bt[2].getText() == "O") ||
                 (bt[3].getText() == "O" && bt[4].getText() == "O" && bt[5].getText() == "O") ||
                 (bt[6].getText() == "O" && bt[7].getText() == "O" && bt[8].getText() == "O") ||
@@ -195,25 +189,21 @@ public class JogoDaVelha extends JFrame {
                 (bt[2].getText() == "O" && bt[5].getText() == "O" && bt[8].getText() == "O") ||
                 (bt[0].getText() == "O" && bt[4].getText() == "O" && bt[8].getText() == "O") ||
                 (bt[6].getText() == "O" && bt[4].getText() == "O" && bt[2].getText() == "O")) {
-            JOptionPane.showMessageDialog(null, "O ganhou");
+            JOptionPane.showMessageDialog(null, "Player O won");
             PO++;
-            atualizar();
-            limpar();
-        }else if (cont == 9){
-            JOptionPane.showMessageDialog(null, "Empate");
-            limpar();
+            update();
+            clear();
+        } else if (cont == 9) {
+            JOptionPane.showMessageDialog(null, "Draw");
+            clear();
         }
     }
 
-    public void limpar() {
+    public void clear() {
         for (int i = 0; i < 9; i++) {
             bt[i].setText("");
             click[i] = false;
-            xo = false; // quando o x ganhar e limpar o jogo, ele começa com x
+            xo = false; // o jogo começa sempre com X
         }
-    }
-
-    public static void main(String[] args) {
-        new JogoDaVelha();
     }
 }
